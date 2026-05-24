@@ -1,0 +1,118 @@
+"""Tests for fixture_index and endpoint_inventory collectors."""
+
+from __future__ import annotations
+
+import textwrap
+from pathlib import Path
+
+from pretest.collect.fixture_index import FixtureIndex
+from pretest.collect.endpoint_inventory import EndpointInventory
+
+
+# ---------------------------------------------------------------------------
+# FixtureIndex
+# ---------------------------------------------------------------------------
+
+def test_fixture_index_detects_fixtures(tmp_path: Path):
+    test_file = tmp_path / "test_example.py"
+    test_file.write_text(
+        textwrap.dedent("""\
+            import pytest
+
+            @pytest.fixture
+            def my_db():
+                return {}
+
+            def test_something(my_db, client):
+                assert my_db == {}
+        """)
+    )
+    index = FixtureIndex()
+    index.scan_directory(tmp_path)
+
+    assert "my_db" in index.all_defined_fixtures()
+    fixtures = index.fixtures_for(f"{test_file}::test_something")
+    assert "my_db" in fixtures
+    assert "client" in fixtures
+
+
+def test_fixture_overlap_same_fixtures(tmp_path: Path):
+    test_file = tmp_path / "test_dup.py"
+    test_file.write_text(
+        textwrap.dedent("""\
+            def test_a(client, db):
+                pass
+
+            def test_b(client, db):
+                pass
+        """)
+    )
+    index = FixtureIndex()
+    index.scan_directory(tmp_path)
+
+    overlap = index.fixture_overlap(f"{test_file}::test_a", f"{test_file}::test_b")
+    assert overlap == 1.0
+
+
+def test_fixture_overlap_no_fixtures(tmp_path: Path):
+    index = FixtureIndex()
+    assert index.fixture_overlap("tests/a.py::test_x", "tests/b.py::test_y") == 0.0
+
+
+# ---------------------------------------------------------------------------
+# EndpointInventory
+# ---------------------------------------------------------------------------
+
+def test_endpoint_inventory_flask_style(tmp_path: Path):
+    app_file = tmp_path / "views.py"
+    app_file.write_text(
+        textwrap.dedent("""\
+            from flask import Flask
+            app = Flask(__name__)
+
+            @app.route('/health', methods=['GET'])
+            def health_check():
+                return 'ok'
+
+            @app.route('/users', methods=['POST'])
+            def create_user():
+                return 'created'
+        """)
+    )
+    inv = EndpointInventory()
+    inv.scan_directory(tmp_path)
+
+    paths = {e.path for e in inv.endpoints}
+    assert "/health" in paths
+    assert "/users" in paths
+
+
+def test_endpoint_inventory_skips_test_files(tmp_path: Path):
+    test_file = tmp_path / "test_views.py"
+    test_file.write_text(
+        textwrap.dedent("""\
+            @app.route('/should_not_appear')
+            def test_something():
+                pass
+        """)
+    )
+    inv = EndpointInventory()
+    inv.scan_directory(tmp_path)
+    paths = {e.path for e in inv.endpoints}
+    assert "/should_not_appear" not in paths
+
+
+def test_endpoint_inventory_detects_sql_service(tmp_path: Path):
+    svc_file = tmp_path / "user_service.py"
+    svc_file.write_text(
+        textwrap.dedent("""\
+            import sqlite3
+
+            def get_users(conn):
+                return conn.execute('SELECT * FROM users').fetchall()
+        """)
+    )
+    inv = EndpointInventory()
+    inv.scan_directory(tmp_path)
+    sql_services = [s for s in inv.services if s.has_sql]
+    assert len(sql_services) >= 1

@@ -1,0 +1,18 @@
+[run]
+source = src/pretest
+context = test
+branch = true
+
+[report]
+show_missing = true
+exclude_lines =
+    pragma: no cover
+    def __repr__
+    if TYPE_CHECKING:
+    raise NotImplementedError
+
+[html]
+directory = htmlcov
+
+[json]
+output = .coverage_data/coverage.json
