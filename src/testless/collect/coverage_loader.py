@@ -5,7 +5,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from pretest.models.coverage_map import CoverageMap, FileCoverage
+from testless.models.coverage_map import CoverageMap, FileCoverage
 
 
 def load_coverage_json(json_path: str | Path) -> CoverageMap:

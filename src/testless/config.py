@@ -1,4 +1,4 @@
-"""Configuration management for pretest."""
+"""Configuration management for testless."""
 
 from __future__ import annotations
 
@@ -8,8 +8,8 @@ import yaml
 from pydantic import BaseModel, Field
 
 
-class PretestConfig(BaseModel):
-    """Top-level configuration for pretest."""
+class TestlessConfig(BaseModel):
+    """Top-level configuration for testless."""
 
     # Source package(s) to measure coverage for
     packages: list[str] = Field(default_factory=list)
@@ -33,10 +33,10 @@ class PretestConfig(BaseModel):
     pytest_args: list[str] = Field(default_factory=list)
 
 
-_DEFAULT_CONFIG_FILES = [".pretest.yml", ".pretest.yaml", "pretest.yml", "pretest.yaml"]
+_DEFAULT_CONFIG_FILES = [".testless.yml", ".testless.yaml", "testless.yml", "testless.yaml"]
 
 
-def load_config(path: str | Path | None = None) -> PretestConfig:
+def load_config(path: str | Path | None = None) -> TestlessConfig:
     """Load config from a YAML file, falling back to defaults."""
     if path is not None:
         cfg_path = Path(path)
@@ -44,13 +44,13 @@ def load_config(path: str | Path | None = None) -> PretestConfig:
             raise FileNotFoundError(f"Config file not found: {cfg_path}")
         with cfg_path.open() as fh:
             data = yaml.safe_load(fh) or {}
-        return PretestConfig(**data)
+        return TestlessConfig(**data)
 
     for name in _DEFAULT_CONFIG_FILES:
         candidate = Path(name)
         if candidate.exists():
             with candidate.open() as fh:
                 data = yaml.safe_load(fh) or {}
-            return PretestConfig(**data)
+            return TestlessConfig(**data)
 
-    return PretestConfig()
+    return TestlessConfig()

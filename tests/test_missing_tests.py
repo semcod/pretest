@@ -2,9 +2,9 @@
 
 from __future__ import annotations
 
-from pretest.analyze.missing_tests import find_missing_tests
-from pretest.collect.endpoint_inventory import EndpointInfo, ServiceInfo
-from pretest.models.findings import TestMeta
+from testless.analyze.missing_tests import find_missing_tests
+from testless.collect.endpoint_inventory import EndpointInfo, ServiceInfo
+from testless.models.findings import TestMeta
 
 
 def test_smoke_test_suggested_for_uncovered_endpoint():

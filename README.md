@@ -1,19 +1,19 @@
-# pretest
+# testless
 
 
 ## AI Cost Tracking
 
-![PyPI](https://img.shields.io/badge/pypi-costs-blue) ![Version](https://img.shields.io/badge/version-0.1.4-blue) ![Python](https://img.shields.io/badge/python-3.9+-blue) ![License](https://img.shields.io/badge/license-Apache--2.0-green)
+![PyPI](https://img.shields.io/badge/pypi-costs-blue) ![Version](https://img.shields.io/badge/version-0.1.5-blue) ![Python](https://img.shields.io/badge/python-3.9+-blue) ![License](https://img.shields.io/badge/license-Apache--2.0-green)
 ![AI Cost](https://img.shields.io/badge/AI%20Cost-$0.59-orange) ![Human Time](https://img.shields.io/badge/Human%20Time-3.0h-blue) ![Model](https://img.shields.io/badge/Model-openrouter%2Fqwen%2Fqwen3--coder--next-lightgrey)
 
-- 🤖 **LLM usage:** $0.5865 (5 commits)
+- 🤖 **LLM usage:** $0.5874 (6 commits)
 - 👤 **Human dev:** ~$300 (3.0h @ $100/h, 30min dedup)
 
 Generated on 2026-05-24 using [openrouter/qwen/qwen3-coder-next](https://openrouter.ai/qwen/qwen3-coder-next)
 
 ---
 
-**pretest** is a Python package that sits as an analytical layer on top of your existing test suite.
+**testless** is a Python package that sits as an analytical layer on top of your existing test suite.
 It analyses test **value**, **coverage overlap**, **duplication**, and **missing gaps**, then generates
 LLM-ready **planfile** tickets that describe exactly what to remove, refactor, or add.
 
@@ -23,42 +23,42 @@ LLM-ready **planfile** tickets that describe exactly what to remove, refactor, o
 
 | Command | What it does |
 |---------|--------------|
-| `pretest scan` | Run pytest with `--cov-context=test` and collect metadata |
-| `pretest duplicates` | Detect duplicate tests (coverage + AST + fixture overlap) |
-| `pretest missing` | Suggest smoke, e2e, contract, and TestQL tests |
-| `pretest planfiles` | Generate YAML planfile tickets for an LLM |
-| `pretest doctor` | Answer questions: "what to remove?", "what to add?" |
+| `testless scan` | Run pytest with `--cov-context=test` and collect metadata |
+| `testless duplicates` | Detect duplicate tests (coverage + AST + fixture overlap) |
+| `testless missing` | Suggest smoke, e2e, contract, and TestQL tests |
+| `testless planfiles` | Generate YAML planfile tickets for an LLM |
+| `testless doctor` | Answer questions: "what to remove?", "what to add?" |
 
 ---
 
 ## Quick Start
 
 ```bash
-pip install pretest
+pip install testless
 # or with uv:
-uv add --dev pretest
+uv add --dev testless
 
 # 1. Scan your project
-pretest scan
+testless scan
 
 # 2. Find duplicate tests (threshold: 85 % similarity)
-pretest duplicates --min-overlap 0.85
+testless duplicates --min-overlap 0.85
 
 # 3. Find missing smoke / service / e2e tests
-pretest missing --services src/myapp
+testless missing --services src/myapp
 
 # 4. Generate LLM planfiles
-pretest planfiles --out .planfiles/ --with-prompts
+testless planfiles --out .planfiles/ --with-prompts
 
 # 5. Ask doctor questions
-pretest doctor "which tests should I remove?"
+testless doctor "which tests should I remove?"
 ```
 
 ---
 
 ## Configuration
 
-Create a `.pretest.yml` in your project root:
+Create a `.testless.yml` in your project root:
 
 ```yaml
 packages:
@@ -115,9 +115,9 @@ llm_hints:
 ## Architecture
 
 ```
-src/pretest/
+src/testless/
 ├── cli.py                  # Click CLI
-├── config.py               # .pretest.yml loader
+├── config.py               # .testless.yml loader
 ├── models/
 │   ├── planfile.py         # Pydantic Planfile model
 │   ├── findings.py         # Finding models

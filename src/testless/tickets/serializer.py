@@ -5,7 +5,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from pretest.models.planfile import Planfile
+from testless.models.planfile import Planfile
 
 
 def write_planfiles(planfiles: list[Planfile], output_dir: str | Path) -> list[Path]:

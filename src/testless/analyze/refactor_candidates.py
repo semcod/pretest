@@ -5,7 +5,7 @@ from __future__ import annotations
 import ast
 from pathlib import Path
 
-from pretest.models.findings import RefactorFinding, TestMeta
+from testless.models.findings import RefactorFinding, TestMeta
 
 
 _MAX_ASSERTIONS = 10

@@ -5,7 +5,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from pretest.models.findings import AnalysisReport
+from testless.models.findings import AnalysisReport
 
 
 def write_json_report(report: AnalysisReport, output_path: str | Path) -> Path:

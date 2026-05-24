@@ -4,12 +4,12 @@ from __future__ import annotations
 
 import click
 
-from pretest.models.findings import AnalysisReport
+from testless.models.findings import AnalysisReport
 
 
 def print_report(report: AnalysisReport) -> None:
     """Print a human-readable summary to the terminal."""
-    click.echo(click.style("\n=== pretest analysis report ===\n", bold=True))
+    click.echo(click.style("\n=== testless analysis report ===\n", bold=True))
 
     # Duplicates
     if report.duplicates:

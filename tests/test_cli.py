@@ -4,14 +4,14 @@ from __future__ import annotations
 
 from click.testing import CliRunner
 
-from pretest.cli import main
+from testless.cli import main
 
 
 def test_cli_help():
     runner = CliRunner()
     result = runner.invoke(main, ["--help"])
     assert result.exit_code == 0
-    assert "pretest" in result.output.lower()
+    assert "testless" in result.output.lower()
 
 
 def test_scan_help():

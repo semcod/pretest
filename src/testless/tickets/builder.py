@@ -4,14 +4,14 @@ from __future__ import annotations
 
 import uuid
 
-from pretest.models.findings import (
+from testless.models.findings import (
     AnalysisReport,
     DeadTestFinding,
     DuplicateFinding,
     MissingTestFinding,
     RefactorFinding,
 )
-from pretest.models.planfile import (
+from testless.models.planfile import (
     Planfile,
     PlanfileEvidence,
     PlanfileImpact,

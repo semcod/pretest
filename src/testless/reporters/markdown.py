@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from pretest.models.findings import AnalysisReport
+from testless.models.findings import AnalysisReport
 
 
 def write_markdown_report(report: AnalysisReport, output_path: str | Path) -> Path:
@@ -12,7 +12,7 @@ def write_markdown_report(report: AnalysisReport, output_path: str | Path) -> Pa
     out = Path(output_path)
     out.parent.mkdir(parents=True, exist_ok=True)
 
-    lines: list[str] = ["# pretest Analysis Report\n"]
+    lines: list[str] = ["# testless Analysis Report\n"]
 
     lines.append("## Duplicate Tests\n")
     if report.duplicates:

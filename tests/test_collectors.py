@@ -5,8 +5,8 @@ from __future__ import annotations
 import textwrap
 from pathlib import Path
 
-from pretest.collect.fixture_index import FixtureIndex
-from pretest.collect.endpoint_inventory import EndpointInventory
+from testless.collect.fixture_index import FixtureIndex
+from testless.collect.endpoint_inventory import EndpointInventory
 
 
 # ---------------------------------------------------------------------------

@@ -1,4 +1,4 @@
-"""CLI entry-point for pretest."""
+"""CLI entry-point for testless."""
 
 from __future__ import annotations
 
@@ -7,14 +7,14 @@ from pathlib import Path
 
 import click
 
-from pretest.config import load_config
+from testless.config import load_config
 
 
 @click.group()
-@click.option("--config", "-c", default=None, help="Path to .pretest.yml config file.")
+@click.option("--config", "-c", default=None, help="Path to .testless.yml config file.")
 @click.pass_context
 def main(ctx: click.Context, config: str | None) -> None:
-    """pretest — analyze test value, coverage, duplication, and generate LLM planfiles."""
+    """testless — analyze test value, coverage, duplication, and generate LLM planfiles."""
     ctx.ensure_object(dict)
     ctx.obj["config"] = load_config(config)
 
@@ -28,7 +28,7 @@ def main(ctx: click.Context, config: str | None) -> None:
 @click.pass_context
 def scan(ctx: click.Context, out: str | None) -> None:
     """Run pytest with coverage contexts and collect test metadata."""
-    from pretest.collect.pytest_runner import run_pytest
+    from testless.collect.pytest_runner import run_pytest
 
     cfg = ctx.obj["config"]
     coverage_dir = out or cfg.coverage_dir
@@ -53,11 +53,11 @@ def scan(ctx: click.Context, out: str | None) -> None:
 @click.pass_context
 def duplicates(ctx: click.Context, min_overlap: float | None, coverage_json: str | None) -> None:
     """Detect duplicate tests based on coverage overlap, AST similarity, and fixture use."""
-    from pretest.collect.coverage_loader import load_coverage_json
-    from pretest.collect.fixture_index import FixtureIndex
-    from pretest.analyze.duplicate_tests import find_duplicates
-    from pretest.reporters.console import print_report
-    from pretest.models.findings import AnalysisReport, TestMeta
+    from testless.collect.coverage_loader import load_coverage_json
+    from testless.collect.fixture_index import FixtureIndex
+    from testless.analyze.duplicate_tests import find_duplicates
+    from testless.reporters.console import print_report
+    from testless.models.findings import AnalysisReport, TestMeta
 
     cfg = ctx.obj["config"]
     min_score = min_overlap if min_overlap is not None else cfg.min_duplicate_score
@@ -109,10 +109,10 @@ def duplicates(ctx: click.Context, min_overlap: float | None, coverage_json: str
 @click.pass_context
 def missing(ctx: click.Context, services: tuple[str, ...]) -> None:
     """Suggest missing smoke, e2e, contract, and TestQL tests."""
-    from pretest.collect.endpoint_inventory import EndpointInventory
-    from pretest.analyze.missing_tests import find_missing_tests
-    from pretest.reporters.console import print_report
-    from pretest.models.findings import AnalysisReport
+    from testless.collect.endpoint_inventory import EndpointInventory
+    from testless.analyze.missing_tests import find_missing_tests
+    from testless.reporters.console import print_report
+    from testless.models.findings import AnalysisReport
 
     cfg = ctx.obj["config"]
     dirs = list(services) if services else cfg.packages or ["."]
@@ -152,17 +152,17 @@ def planfiles(
     with_prompts: bool,
 ) -> None:
     """Generate planfile YAML tickets for LLM from all findings."""
-    from pretest.collect.coverage_loader import load_coverage_json
-    from pretest.collect.fixture_index import FixtureIndex
-    from pretest.collect.endpoint_inventory import EndpointInventory
-    from pretest.analyze.duplicate_tests import find_duplicates
-    from pretest.analyze.dead_tests import find_dead_tests
-    from pretest.analyze.missing_tests import find_missing_tests
-    from pretest.analyze.refactor_candidates import find_refactor_candidates
-    from pretest.tickets.builder import build_planfiles
-    from pretest.tickets.serializer import write_planfiles, write_summary_json
-    from pretest.tickets.prompts import attach_prompt
-    from pretest.models.findings import AnalysisReport, TestMeta
+    from testless.collect.coverage_loader import load_coverage_json
+    from testless.collect.fixture_index import FixtureIndex
+    from testless.collect.endpoint_inventory import EndpointInventory
+    from testless.analyze.duplicate_tests import find_duplicates
+    from testless.analyze.dead_tests import find_dead_tests
+    from testless.analyze.missing_tests import find_missing_tests
+    from testless.analyze.refactor_candidates import find_refactor_candidates
+    from testless.tickets.builder import build_planfiles
+    from testless.tickets.serializer import write_planfiles, write_summary_json
+    from testless.tickets.prompts import attach_prompt
+    from testless.models.findings import AnalysisReport, TestMeta
 
     cfg = ctx.obj["config"]
     output_dir = out or cfg.planfiles_dir
@@ -235,15 +235,15 @@ def doctor(
     services: tuple[str, ...],
 ) -> None:
     """Answer questions about test health (what to remove, add, or fix)."""
-    from pretest.collect.coverage_loader import load_coverage_json
-    from pretest.collect.fixture_index import FixtureIndex
-    from pretest.collect.endpoint_inventory import EndpointInventory
-    from pretest.analyze.duplicate_tests import find_duplicates
-    from pretest.analyze.dead_tests import find_dead_tests
-    from pretest.analyze.missing_tests import find_missing_tests
-    from pretest.analyze.refactor_candidates import find_refactor_candidates
-    from pretest.reporters.console import print_report
-    from pretest.models.findings import AnalysisReport, TestMeta
+    from testless.collect.coverage_loader import load_coverage_json
+    from testless.collect.fixture_index import FixtureIndex
+    from testless.collect.endpoint_inventory import EndpointInventory
+    from testless.analyze.duplicate_tests import find_duplicates
+    from testless.analyze.dead_tests import find_dead_tests
+    from testless.analyze.missing_tests import find_missing_tests
+    from testless.analyze.refactor_candidates import find_refactor_candidates
+    from testless.reporters.console import print_report
+    from testless.models.findings import AnalysisReport, TestMeta
 
     cfg = ctx.obj["config"]
 

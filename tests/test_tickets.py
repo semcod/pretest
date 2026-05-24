@@ -4,17 +4,17 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from pretest.models.findings import (
+from testless.models.findings import (
     AnalysisReport,
     DeadTestFinding,
     DuplicateFinding,
     MissingTestFinding,
     RefactorFinding,
 )
-from pretest.tickets.builder import build_planfiles, build_duplicate_ticket
-from pretest.tickets.serializer import write_planfiles, write_summary_json
-from pretest.tickets.prompts import attach_prompt
-from pretest.models.planfile import PlanfileKind
+from testless.tickets.builder import build_planfiles, build_duplicate_ticket
+from testless.tickets.serializer import write_planfiles, write_summary_json
+from testless.tickets.prompts import attach_prompt
+from testless.models.planfile import PlanfileKind
 
 
 def test_build_duplicate_ticket():

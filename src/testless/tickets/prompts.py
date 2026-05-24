@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from pretest.models.planfile import Planfile, PlanfileKind
+from testless.models.planfile import Planfile, PlanfileKind
 
 _PROMPTS: dict[PlanfileKind, str] = {
     PlanfileKind.duplicate: (

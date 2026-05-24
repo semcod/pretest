@@ -1,4 +1,4 @@
-"""Tests for pretest.config."""
+"""Tests for testless.config."""
 
 from __future__ import annotations
 
@@ -7,19 +7,19 @@ from pathlib import Path
 
 import pytest
 
-from pretest.config import PretestConfig, load_config
+from testless.config import TestlessConfig, load_config
 
 
 def test_default_config():
     cfg = load_config()
-    assert isinstance(cfg, PretestConfig)
+    assert isinstance(cfg, TestlessConfig)
     assert cfg.test_dirs == ["tests"]
     assert cfg.planfiles_dir == ".planfiles"
     assert 0 < cfg.min_duplicate_score <= 1.0
 
 
 def test_load_config_from_file(tmp_path: Path):
-    cfg_file = tmp_path / ".pretest.yml"
+    cfg_file = tmp_path / ".testless.yml"
     cfg_file.write_text(
         textwrap.dedent("""\
             packages:
@@ -36,4 +36,4 @@ def test_load_config_from_file(tmp_path: Path):
 
 def test_load_config_missing_file():
     with pytest.raises(FileNotFoundError):
-        load_config("/nonexistent/path/.pretest.yml")
+        load_config("/nonexistent/path/.testless.yml")

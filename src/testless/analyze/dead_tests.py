@@ -2,8 +2,8 @@
 
 from __future__ import annotations
 
-from pretest.models.coverage_map import CoverageMap
-from pretest.models.findings import DeadTestFinding, TestMeta
+from testless.models.coverage_map import CoverageMap
+from testless.models.findings import DeadTestFinding, TestMeta
 
 
 def find_dead_tests(

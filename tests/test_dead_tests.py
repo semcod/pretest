@@ -2,9 +2,9 @@
 
 from __future__ import annotations
 
-from pretest.analyze.dead_tests import find_dead_tests
-from pretest.models.coverage_map import CoverageMap, FileCoverage
-from pretest.models.findings import TestMeta
+from testless.analyze.dead_tests import find_dead_tests
+from testless.models.coverage_map import CoverageMap, FileCoverage
+from testless.models.findings import TestMeta
 
 
 def _make_tests(*node_ids: str) -> list[TestMeta]:

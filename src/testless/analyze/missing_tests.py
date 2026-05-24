@@ -2,8 +2,8 @@
 
 from __future__ import annotations
 
-from pretest.collect.endpoint_inventory import EndpointInfo, ServiceInfo
-from pretest.models.findings import MissingTestFinding, TestMeta
+from testless.collect.endpoint_inventory import EndpointInfo, ServiceInfo
+from testless.models.findings import MissingTestFinding, TestMeta
 
 
 # Endpoint paths that should always have smoke test coverage

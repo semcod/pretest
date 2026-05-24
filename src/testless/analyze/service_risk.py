@@ -2,8 +2,8 @@
 
 from __future__ import annotations
 
-from pretest.collect.endpoint_inventory import ServiceInfo
-from pretest.models.findings import MissingTestFinding
+from testless.collect.endpoint_inventory import ServiceInfo
+from testless.models.findings import MissingTestFinding
 
 
 def score_service_risk(

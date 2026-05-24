@@ -2,10 +2,10 @@
 
 from __future__ import annotations
 
-from pretest.analyze.duplicate_tests import find_duplicates, _duplicate_score
-from pretest.collect.fixture_index import FixtureIndex
-from pretest.models.coverage_map import CoverageMap, FileCoverage
-from pretest.models.findings import TestMeta
+from testless.analyze.duplicate_tests import find_duplicates, _duplicate_score
+from testless.collect.fixture_index import FixtureIndex
+from testless.models.coverage_map import CoverageMap, FileCoverage
+from testless.models.findings import TestMeta
 
 
 def _make_tests(*node_ids: str) -> list[TestMeta]:

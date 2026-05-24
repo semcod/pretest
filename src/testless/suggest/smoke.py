@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from pretest.collect.endpoint_inventory import EndpointInfo
+from testless.collect.endpoint_inventory import EndpointInfo
 
 
 _SMOKE_TEMPLATE = '''\

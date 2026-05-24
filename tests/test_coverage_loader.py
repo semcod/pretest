@@ -5,8 +5,8 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from pretest.collect.coverage_loader import load_coverage_json
-from pretest.models.coverage_map import CoverageMap
+from testless.collect.coverage_loader import load_coverage_json
+from testless.models.coverage_map import CoverageMap
 
 
 def _write_coverage_json(path: Path, data: dict) -> None:

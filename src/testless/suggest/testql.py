@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from pretest.collect.endpoint_inventory import ServiceInfo
+from testless.collect.endpoint_inventory import ServiceInfo
 
 _TESTQL_TEMPLATE = '''\
 """TestQL-style source-level tests for {module}.

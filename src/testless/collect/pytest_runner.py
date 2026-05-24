@@ -7,7 +7,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-from pretest.models.findings import TestMeta
+from testless.models.findings import TestMeta
 
 
 def run_pytest(

@@ -3,8 +3,8 @@ requires = ["setuptools>=68", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "pretest"
-version = "0.1.4"
+name = "testless"
+version = "0.1.5"
 description = "Analyze test value, coverage, duplication, and generate LLM planfiles"
 readme = "README.md"
 requires-python = ">=3.11"
@@ -38,7 +38,7 @@ dev = [
 ]
 
 [project.scripts]
-pretest = "pretest.cli:main"
+testless = "testless.cli:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]

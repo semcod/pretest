@@ -1,11 +1,11 @@
-"""Tests for pretest models."""
+"""Tests for testless models."""
 
 from __future__ import annotations
 
 import pytest
 
-from pretest.models.planfile import Planfile, PlanfileKind, RiskLevel, PlanfileImpact
-from pretest.models.findings import (
+from testless.models.planfile import Planfile, PlanfileKind, RiskLevel, PlanfileImpact
+from testless.models.findings import (
     AnalysisReport,
     DeadTestFinding,
     DuplicateFinding,
@@ -13,7 +13,7 @@ from pretest.models.findings import (
     RefactorFinding,
     TestMeta,
 )
-from pretest.models.coverage_map import CoverageMap, FileCoverage
+from testless.models.coverage_map import CoverageMap, FileCoverage
 
 
 # ---------------------------------------------------------------------------

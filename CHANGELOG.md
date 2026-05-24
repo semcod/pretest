@@ -7,6 +7,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.5] - 2026-05-24
+
+### Docs
+- Update README.md
+
+### Test
+- Update tests/test_cli.py
+- Update tests/test_collectors.py
+- Update tests/test_config.py
+- Update tests/test_coverage_loader.py
+- Update tests/test_dead_tests.py
+- Update tests/test_duplicate_tests.py
+- Update tests/test_missing_tests.py
+- Update tests/test_models.py
+- Update tests/test_tickets.py
+
+### Other
+- Update .idea/misc.xml
+- Update uv.lock
+
 ## [0.1.4] - 2026-05-24
 
 ### Docs
