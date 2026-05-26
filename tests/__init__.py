@@ -1,1 +1,1 @@
-"""Tests for the pretest package."""
+"""Tests for the testless package."""

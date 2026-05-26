@@ -1,11 +1,12 @@
 # Byte-compiled / optimized / DLL files
+.coveragerc
 .idea/misc.xml
 .idea/pyProjectModel.xml
 .env.example
 .idea/inspectionProfiles/Project_Default.xml
 .idea/inspectionProfiles/profiles_settings.xml
 .idea/modules.xml
-.idea/pretest.iml
+.idea/testless.iml
 .idea/vcs.xml
 __pycache__/
 *.py[codz]
