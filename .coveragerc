@@ -1,5 +1,5 @@
 [run]
-source = src/pretest
+source = src/testless
 context = test
 branch = true
 
