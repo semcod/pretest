@@ -1,0 +1,142 @@
+// LESS format — define @variables here as needed
+
+app {
+  name: testless;
+  version: 0.1.7;
+  description: "Analyze test value, coverage, duplication, and generate LLM planfiles";
+  license: Apache-2.0;
+  keywords: "testing, coverage, analysis, llm, planfile";
+}
+
+dependencies {
+  runtime: "click>=8.1, coverage>=7.0, pytest>=8.0, pytest-cov>=5.0, pydantic>=2.7, PyYAML>=6.0, networkx>=3.0";
+  dev: "ruff>=0.4, mypy>=1.10, goal>=2.1.0, costs>=0.1.20, pfix>=0.1.60";
+}
+
+entity[name="TestMeta"] {
+  node_id: string!;
+  file: string!;
+  name: string!;
+  duration: float!;
+  status: string!;
+  markers: list[str]!;
+  fixtures: list[str]!;
+}
+
+entity[name="DuplicateFinding"] {
+  test_a: string!;
+  test_b: string!;
+  score: float!;
+  coverage_overlap: float!;
+  ast_similarity: float!;
+  fixture_overlap: float!;
+  name_similarity: float!;
+  recommendation: string!;
+}
+
+entity[name="DeadTestFinding"] {
+  node_id: string!;
+  file: string!;
+  unique_lines: int!;
+  total_lines: int!;
+  reason: string!;
+}
+
+entity[name="MissingTestFinding"] {
+  target: string!;
+  test_type: string!;
+  description: string!;
+  priority: string!;
+  suggested_file: str | None;
+}
+
+entity[name="RefactorFinding"] {
+  node_id: string!;
+  file: string!;
+  reason: string!;
+  details: string!;
+}
+
+entity[name="AnalysisReport"] {
+  duplicates: list[DuplicateFinding]!;
+  dead_tests: list[DeadTestFinding]!;
+  missing_tests: list[MissingTestFinding]!;
+  refactor_candidates: list[RefactorFinding]!;
+  tests: list[TestMeta]!;
+}
+
+entity[name="FileCoverage"] {
+  path: string!;
+  line_to_tests: dict[int, list[str]]!;
+}
+
+entity[name="CoverageMap"] {
+  files: dict[str, FileCoverage]!;
+  result: dict[str, set[int]]!;
+  lines_a: set[tuple[str, int]]!;
+  lines_b: set[tuple[str, int]]!;
+}
+
+entity[name="PlanfileEvidence"] {
+  description: string!;
+  score: float | None;
+  files: list[str]!;
+}
+
+entity[name="PlanfileImpact"] {
+  risk: RiskLevel!;
+  expected_gains: list[str]!;
+}
+
+entity[name="PlanfileTask"] {
+  description: string!;
+  file: str | None;
+}
+
+entity[name="Planfile"] {
+  version: string!;
+  kind: PlanfileKind!;
+  id: string!;
+  title: string!;
+  goal: string!;
+  context: dict[str, Any]!;
+  evidence: list[PlanfileEvidence]!;
+  impact: PlanfileImpact!;
+  tasks: list[PlanfileTask]!;
+  acceptance_criteria: list[str]!;
+  artifacts: list[str]!;
+  llm_hints: dict[str, Any]!;
+}
+
+interface[type="api"] {
+  type: rest;
+  framework: fastapi;
+}
+
+interface[type="cli"] {
+  framework: click;
+}
+interface[type="cli"] page[name="testless"] {
+  entry: testless.cli:main;
+}
+interface[type="cli"] page[name="pretest"] {
+  entry: testless.cli:main;
+}
+
+env_vars {
+  keys: OPENROUTER_API_KEY, LLM_MODEL, PFIX_AUTO_APPLY, PFIX_AUTO_INSTALL_DEPS, PFIX_AUTO_RESTART, PFIX_MAX_RETRIES, PFIX_DRY_RUN, PFIX_ENABLED, PFIX_GIT_COMMIT, PFIX_GIT_PREFIX, PFIX_CREATE_BACKUPS;
+}
+
+deploy {
+  target: pip;
+}
+
+environment[name="local"] {
+  runtime: python;
+  env_file: .env;
+  template_file: .env.example;
+  python_version: >=3.11;
+  vars: LLM_MODEL, OPENROUTER_API_KEY, PFIX_AUTO_APPLY, PFIX_AUTO_INSTALL_DEPS, PFIX_AUTO_RESTART, PFIX_CREATE_BACKUPS, PFIX_DRY_RUN, PFIX_ENABLED, PFIX_GIT_COMMIT, PFIX_GIT_PREFIX, PFIX_MAX_RETRIES;
+  runtime_llm: OPENROUTER_API_KEY;
+  runtime_pfix: PFIX_AUTO_APPLY, PFIX_AUTO_INSTALL_DEPS, PFIX_AUTO_RESTART, PFIX_CREATE_BACKUPS, PFIX_DRY_RUN, PFIX_ENABLED, PFIX_GIT_COMMIT, PFIX_GIT_PREFIX, PFIX_MAX_RETRIES;
+}
